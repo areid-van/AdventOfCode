@@ -1,7 +1,7 @@
 import re
 import math
 
-with open('input_6.txt') as f: text = f.read()
+with open('input/6.txt') as f: text = f.read()
 
 match = re.match('Time:([0-9\s]+)Distance:([0-9\s]+)', text)
 

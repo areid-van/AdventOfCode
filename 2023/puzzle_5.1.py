@@ -1,6 +1,6 @@
 import re
 
-with open('input_5.txt') as f:
+with open('input/5.txt') as f:
     text = f.read()
 
 match = re.match('seeds:([ 0-9]+)', text)

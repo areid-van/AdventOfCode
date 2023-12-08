@@ -3,7 +3,7 @@ import numpy as np
 
 digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']
 
-with open('input_3.txt') as f:
+with open('input/3.txt') as f:
     lines = f.readlines()
 
 line_size = len(lines[0].strip())

@@ -3,7 +3,7 @@ import re
 cards = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
 card_order = {cards[i]:i+2 for i in range(len(cards))}
 
-with open('input_7.txt') as f: lines = f.readlines()
+with open('input/7.txt') as f: lines = f.readlines()
 
 hands = list()
 for line in lines:

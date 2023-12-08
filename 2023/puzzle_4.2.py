@@ -1,6 +1,6 @@
 import re
 
-with open('input_4.txt') as f:
+with open('input/4.txt') as f:
     lines = f.readlines()
 
 cards = dict()

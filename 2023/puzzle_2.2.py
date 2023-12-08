@@ -7,7 +7,7 @@ cmap = {'red': 0,
 
 cubes = np.array([12,13,14])
 
-lines = open('input_2.txt').readlines()
+lines = open('input/2.txt').readlines()
 
 answer = 0
 

@@ -11,7 +11,7 @@ names = {'one': '1',
          'nine': '9'}
 
 answer = 0
-for line in open('input_1.txt').readlines():
+for line in open('input/1.txt').readlines():
     digits = re.findall('(?=([1-9]|%s))' % '|'.join(names.keys()), line)
     digits = [names.get(x,x) for x in digits]
     answer += int(digits[0]+digits[-1])
