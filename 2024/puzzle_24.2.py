@@ -1,58 +1,36 @@
 import re
 
-with open('input/24.txt') as f:
-    lines = f.readlines()
-
 gates = []
-for line in lines:
-    match = re.match('([xy][0-9][0-9]): ([01])|(...)\\s(AND|OR|XOR)\\s(...)\\s->\\s(...)', line.strip())
-    if match and not match[1]:
-        gates.append([match[4],match[3],match[5],match[6]])
-
-wires_to_gates = {}
-for i in range(len(gates)):
-    gate = gates[i]
-
-    for j in [1,2]:
-        inpt = gate[j]
-        if not inpt in wires_to_gates:
-            wires_to_gates[inpt] = []
-        wires_to_gates[inpt].append(i)
-
-outputs_to_gates = {}
-for i in range(len(gates)):
-    gate = gates[i]
-    outputs_to_gates[gate[3]] = i
+with open('input/24.txt') as f:
+    for line in f.readlines():
+        match = re.match('(...)\\s(AND|OR|XOR)\\s(...)\\s->\\s(...)', line.strip())
+        if match:
+            gates.append({'op': match[2],'inputs': (match[1],match[3]), 'output': match[4]})
 
 swap = []
-
 for bit in range(1,45):
-    wire = 'x' + str(bit).zfill(2)
-    target = 'z' + str(bit).zfill(2)
-    gs = wires_to_gates[wire]
-    for g in gs:
-        gate = gates[g]
-        if gate[0] == 'XOR':
-            out = gate[3]
-            gs2 = wires_to_gates[out]
+    x_bit_wire = 'x' + str(bit).zfill(2)
+    z_bit_wire = 'z' + str(bit).zfill(2)
+
+    for gate in (x for x in gates if x_bit_wire in x['inputs']):
+        if gate['op'] == 'XOR':
+            bit_sum_wire = gate['output']
             found_xor = False
-            for g2 in gs2:
-                gate2 = gates[g2]
-                if gate2[0] == 'XOR':
+            for gate2 in (x for x in gates if bit_sum_wire in x['inputs']):
+                if gate2['op'] == 'XOR':
                     found_xor = True
-                    out2 = gate2[3]
-                    if out2 != target:
-                        swap.append(target)
-                        swap.append(out2)
+                    sum_wire = gate2['output']
+                    if sum_wire != z_bit_wire:
+                        swap.append(z_bit_wire)
+                        swap.append(sum_wire)
+
             if not found_xor:
-                swap.append(out) 
-                xor_gate = gates[outputs_to_gates[target]]
-                for j in [1,2]:
-                    inpt = xor_gate[j]
-                    gate3 = gates[outputs_to_gates[inpt]]
-                    if gate3[0] != 'OR':
-                        swap.append(inpt)
+                swap.append(bit_sum_wire) 
+                xor_gate = [x for x in  gates if x['output'] == z_bit_wire][0]
+                for xor_input in xor_gate['inputs']:
+                    gate2 = [x for x in gates if x['output'] == xor_input][0]
+                    if gate2['op'] != 'OR':
+                        swap.append(xor_input)
 
 swap.sort()
-ans = ','.join(swap)
-print('Answer: ', ans)
+print('Answer: ', ','.join(swap))
